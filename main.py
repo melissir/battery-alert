@@ -5,14 +5,14 @@ import tkinter.messagebox as mb
 class BattDisplay(Frame):
     def __init__(self, master):
         Frame.__init__(self, master)
-        self.conn = wmi.WMI(moniker = "//./root/wmi")
+        self.conn = wmi.WMI(moniker="//./root/wmi")
         self.batts = self.conn.ExecQuery('Select * from BatteryFullChargedCapacity')
         self.full_cap = self.batts[0].FullChargedCapacity
         self.switch_status = False
         self.batt_percent = 0
         self.batt_show = StringVar()
         self.batt_label = Label(self, textvariable=self.batt_show)
-        self.btn = Button(text = "Battery Tracker", command=self.toggle_switch)
+        self.btn = Button(text="Battery Tracker", command=self.toggle_switch)
         self.batt_label.pack()
         self.btn.pack()
         self.update_me()
@@ -41,14 +41,14 @@ class BattDisplay(Frame):
     def update_batt_percent(self):
         self.batts = self.conn.ExecQuery('Select * from BatteryStatus where Voltage > 0')
         rem_cap = self.batts[0].RemainingCapacity
-        self.batt_percent = int(rem_cap/self.full_cap * 100)
+        self.batt_percent = int(rem_cap / self.full_cap * 100)
         self.batt_show.set("Battery Level: %s percent" % str(self.batt_percent))
 
     
 
 
-#main
-tk = Tk()
-timer_frame = BattDisplay(tk)
-timer_frame.pack()
-tk.mainloop()
+if __name__ == '__main__':
+    tk = Tk()
+    timer_frame = BattDisplay(tk)
+    timer_frame.pack()
+    tk.mainloop()
